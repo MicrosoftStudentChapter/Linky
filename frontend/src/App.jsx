@@ -1,20 +1,23 @@
 import React from 'react';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import MainContentSection from './Maincontent';
 import "./App.css"
 const App = () => {
   return (
+    <div className='app'>
     <Container
       maxWidth="md" 
       sx={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh',
+        height: '89vh',
+        width: '50vw',
       }}
     >
       <MainContentSection />
     </Container>
+    </div>
   );
 };
 

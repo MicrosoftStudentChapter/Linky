@@ -3,6 +3,11 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background: '#121212';
-  color: '#ffffff';
+}
+body{
+  background-image: url('https://res.cloudinary.com/dcvqnyvvt/image/upload/v1710435813/AnasAbdin__Photo_tqzpxv.gif');
+  background-size: cover;
+  height: 100vh;
+  padding:0;
+  margin:0;
 }
