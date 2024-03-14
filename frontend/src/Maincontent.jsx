@@ -12,9 +12,17 @@ const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState('');
   const [alias, setAlias] = useState('');
   const [shortenedUrl, setShortenedUrl] = useState('');
-  const [snackbarOpen, setSnackbarOpen] = useState(false); 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [error, setError] = useState(''); 
 
   const handleShortenUrl = () => {
+    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/; 
+    if (!urlRegex.test(longUrl)) {
+      setError('Invalid URL'); 
+      return;
+    }
+    setError(''); 
+
     const shortenedUrl = generateShortenedUrl(longUrl, alias);
     setShortenedUrl(shortenedUrl);
   };
@@ -43,7 +51,7 @@ const MainContentSection = () => {
     navigator.clipboard.writeText(shortenedUrl)
       .then(() => {
         console.log('URL copied to clipboard');
-        setSnackbarOpen(true); 
+        setSnackbarOpen(true);
       })
       .catch((error) => {
         console.error('Failed to copy URL to clipboard:', error);
@@ -62,6 +70,8 @@ const MainContentSection = () => {
           value={longUrl}
           onChange={(e) => setLongUrl(e.target.value)}
           required
+          error={!!error}
+          helperText={error} 
         />
       </Grid>
       <Grid item xs={12}>
@@ -95,11 +105,12 @@ const MainContentSection = () => {
           </Button>
         </Grid>
       )}
+      {/* Snackbar Component */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000} 
-        onClose={() => setSnackbarOpen(false)} 
-        message="Successfully copied Link" 
+        autoHideDuration={3000} // Hide after 3 seconds
+        onClose={() => setSnackbarOpen(false)} // Close Snackbar
+        message="Successfully copied Link" // Snackbar message
       />
     </Grid>
   );
