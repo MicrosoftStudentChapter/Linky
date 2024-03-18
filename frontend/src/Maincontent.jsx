@@ -95,7 +95,7 @@ const MainContentSection = () => {
       {shortenedUrl && (
         <Grid item xs={12}>
           Shortened URL: {shortenedUrl}
-          <Button variant='contained' href={shortenedUrl} sx={{ml:2}}><LaunchIcon/></Button>
+          <Button variant='contained' href={shortenedUrl} target='blank' sx={{ml:2}}><LaunchIcon/></Button>
           <Button
             variant="outlined"
             color="primary"
