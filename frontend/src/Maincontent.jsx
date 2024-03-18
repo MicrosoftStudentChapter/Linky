@@ -49,6 +49,8 @@ const MainContentSection = () => {
       url: "https://l.mlsctiet.com/add-link",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin":
+          "https://generate.mlsctiet.com, http://localhost:5173",
       },
       data: raw,
     };
