@@ -19,6 +19,20 @@ type RequestBody struct {
 	Expiry   string `json:"expiry"`
 }
 
+func GetAllLinks(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background()
+	links := mapping.GetAllLinks(ctx, Mem)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	if len(links) == 0 {
+		w.Write([]byte("No links found"))
+		return
+	}
+	for _, link := range links {
+		w.Write([]byte(fmt.Sprintf("%s - %s\n", link.ShortURL, link.Link)))
+	}
+}
+
 func HandleRouting(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	link := r.URL.Path[1:]
@@ -27,11 +41,8 @@ func HandleRouting(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Welcome to MLSC Link Generator! This link is not yet created."))
 		return
-
 	}
 	http.Redirect(w, r, url, http.StatusSeeOther)
-	// w.WriteHeader(http.StatusOK)
-	// w.Write([]byte(url))/
 }
 
 func AddLink(w http.ResponseWriter, r *http.Request) {
@@ -40,13 +51,14 @@ func AddLink(w http.ResponseWriter, r *http.Request) {
 	var req RequestBody
 	_ = json.Unmarshal(body, &req)
 	link, err := mapping.AddURL(req.Link, req.ShortURL, req.Expiry, ctx, Mem)
+	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		// w.Write([]byte(err.Error()))
+		json.NewEncoder(w).Encode(link)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(link)
 }

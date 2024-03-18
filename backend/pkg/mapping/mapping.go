@@ -35,7 +35,7 @@ func AddURL(linkURL string, shortURL string, exp string, ctx context.Context, co
 	if !match {
 		return Link{}, fmt.Errorf("invalid link url")
 	}
-	existingPaths := [6]string{"about", "community", "events", "gallery", "team", "sponsors"}
+	existingPaths := []string{"about", "community", "events", "gallery", "team", "sponsors", "health", "links"}
 	for _, path := range existingPaths {
 		if path == shortURL {
 			return Link{}, fmt.Errorf("link already exists on website")
@@ -68,4 +68,17 @@ func GetURL(shortURL string, ctx context.Context, conn *redis.Client) string {
 		return "Link not found"
 	}
 	return mapping["Link"]
+}
+
+func GetAllLinks(ctx context.Context, conn *redis.Client) []Link {
+	keys := conn.Keys(ctx, "*").Val()
+	var links []Link
+	for _, key := range keys {
+		link := conn.HGetAll(ctx, key).Val()
+		links = append(links, Link{
+			Link:     link["Link"],
+			ShortURL: link["ShortURL"],
+		})
+	}
+	return links
 }
