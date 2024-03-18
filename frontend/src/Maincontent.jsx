@@ -10,7 +10,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import LaunchIcon from '@mui/icons-material/Launch';
+import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
 
 const darkTheme = createTheme({
@@ -23,7 +23,6 @@ const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
-  const [short, setShort] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
 
@@ -36,12 +35,11 @@ const MainContentSection = () => {
     setError("");
 
     const shortenedUrl = generateShortenedUrl(alias);
-    setShortenedUrl(shortenedUrl);
 
     // api call to add link in the backend
     const raw = JSON.stringify({
       Link: longUrl,
-      ShortURL: short,
+      ShortURL: shortenedUrl,
       Expiry: "",
     });
     const config = {
@@ -57,7 +55,12 @@ const MainContentSection = () => {
     };
     const response = await axios.request(config);
     // show the response from the backend with this
-    console.log(response);
+    if (response.status == 200) {
+      console.log(raw);
+      setShortenedUrl("https://l.mlsctiet.com/" + shortenedUrl);
+    } else {
+      setShortenedUrl("Error in shortening the URL");
+    }
   };
 
   const generateRandomAlias = () => {
@@ -74,16 +77,11 @@ const MainContentSection = () => {
   };
 
   const generateShortenedUrl = (alias) => {
-    let shortenedUrl = "https://l.mlsctiet.com/";
     if (alias.trim() !== "") {
-      setShort(alias);
-      shortenedUrl += alias;
+      return alias;
     } else {
-      const s = generateRandomAlias();
-      shortenedUrl += s;
-      setShort(s);
+      return generateRandomAlias();
     }
-    return shortenedUrl;
   };
 
   const copyToClipboard = () => {
@@ -135,8 +133,18 @@ const MainContentSection = () => {
       </Grid>
       {shortenedUrl && (
         <Grid item xs={12}>
-          Shortened URL: <a href={shortenedUrl} target='blank'>{shortenedUrl}</a>
-          <Button variant='contained' href={shortenedUrl} target='blank' sx={{ml:2}}><LaunchIcon/></Button>
+          Shortened URL:{" "}
+          <a href={shortenedUrl} target="blank">
+            {shortenedUrl}
+          </a>
+          <Button
+            variant="contained"
+            href={shortenedUrl}
+            target="blank"
+            sx={{ ml: 2 }}
+          >
+            <LaunchIcon />
+          </Button>
           <Button
             variant="outlined"
             color="primary"
