@@ -22,6 +22,7 @@ const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
+  const [short, setShort] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
 
@@ -33,19 +34,19 @@ const MainContentSection = () => {
     }
     setError("");
 
-    const shortenedUrl = generateShortenedUrl(longUrl, alias);
+    const shortenedUrl = generateShortenedUrl(alias);
     setShortenedUrl(shortenedUrl);
 
     // api call to add link in the backend
     const raw = JSON.stringify({
       Link: longUrl,
-      ShortURL: shortenedUrl,
+      ShortURL: short,
       Expiry: "",
     });
     const config = {
       method: "POST",
       maxBodyLength: Infinity,
-      url: "http://localhost:4000/add-link",
+      url: "https://l.mlsctiet.com/add-link",
       headers: {
         "Content-Type": "application/json",
       },
@@ -69,12 +70,15 @@ const MainContentSection = () => {
     return randomString;
   };
 
-  const generateShortenedUrl = (longUrl, alias) => {
-    let shortenedUrl = "";
+  const generateShortenedUrl = (alias) => {
+    let shortenedUrl = "https://l.mlsctiet.com/";
     if (alias.trim() !== "") {
+      setShort(alias);
       shortenedUrl += alias;
     } else {
-      shortenedUrl += generateRandomAlias();
+      const s = generateRandomAlias();
+      shortenedUrl += s;
+      setShort(s);
     }
     return shortenedUrl;
   };
