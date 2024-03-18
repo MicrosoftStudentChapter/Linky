@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, createTheme, ThemeProvider, Typography, Box, Snackbar } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
+import LaunchIcon from '@mui/icons-material/Launch';
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -94,7 +94,8 @@ const MainContentSection = () => {
       </Grid>
       {shortenedUrl && (
         <Grid item xs={12}>
-          <Typography variant='body6'>Shortened URL: {shortenedUrl}</Typography>
+          Shortened URL: {shortenedUrl}
+          <Button variant='contained' href={shortenedUrl} sx={{ml:2}}><LaunchIcon/></Button>
           <Button
             variant="outlined"
             color="primary"
