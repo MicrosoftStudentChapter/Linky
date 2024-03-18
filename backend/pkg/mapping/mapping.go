@@ -1,79 +1,71 @@
 package mapping
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
-type Links struct {
-	Link      string
-	ShortURL  string
-	CreatedAt time.Time
-	Expiry    time.Time
+type Link struct {
+	Link     string `redis:"Link" json:"link"`
+	ShortURL string `redis:"ShortURL" json:"shortURL"`
 }
 
-func (m *Links) GetShortURL() string {
-	return m.ShortURL
-}
-
-func (m *Links) GetExpiry() time.Time {
-	return m.Expiry
-}
-
-func (m *Links) CheckExpiry(time time.Time) bool {
-	if m.Expiry.Before(time) {
-		return true
-	} else {
-		return false
-	}
-}
-
-func (m *Links) GetLink() string {
-	return m.Link
-}
-
-// Change this in memory store to a redis adapter
-var Mappings = make(map[string]Links)
-
-func AddURL(linkURL string, shortURL string, exp string) (Links, error) {
-	expiry, err := time.Parse(time.RFC3339, exp)
-	if err != nil {
-		return Links{}, err
+func AddURL(linkURL string, shortURL string, exp string, ctx context.Context, conn *redis.Client) (Link, error) {
+	existingMap := conn.HGetAll(ctx, shortURL).Val()
+	if len(existingMap) != 0 {
+		if existingMap["Link"] == linkURL {
+			return Link{
+				Link:     existingMap["Link"],
+				ShortURL: existingMap["ShortURL"],
+			}, nil
+		} else {
+			return Link{}, fmt.Errorf("shortURL already exists")
+		}
 	}
 	linkPattern := "^[a-zA-Z0-9 -]+$"
 	match, err := regexp.MatchString(linkPattern, shortURL)
 	if err != nil {
 		fmt.Println(err)
-		return Links{}, err
+		return Link{}, err
 	}
 	if !match {
-		return Links{}, fmt.Errorf("invalid link name")
+		return Link{}, fmt.Errorf("invalid link url")
 	}
-	mapping := Links{
-		Link:      linkURL,
-		ShortURL:  shortURL,
-		CreatedAt: time.Now(),
-		Expiry:    expiry,
+	existingPaths := [6]string{"about", "community", "events", "gallery", "team", "sponsors"}
+	for _, path := range existingPaths {
+		if path == shortURL {
+			return Link{}, fmt.Errorf("link already exists on website")
+		}
 	}
-	Mappings[shortURL] = mapping
+	mapping := Link{
+		Link:     linkURL,
+		ShortURL: shortURL,
+	}
+	err = conn.HSet(ctx, shortURL, mapping).Err()
+	if err != nil {
+		return Link{}, err
+	}
+	if exp != "" {
+		expiry, err := time.Parse(time.RFC3339, exp)
+		if err != nil {
+			return Link{}, err
+		}
+		_, err = conn.Expire(ctx, shortURL, time.Until(expiry)).Result()
+		if err != nil {
+			return Link{}, err
+		}
+	}
 	return mapping, nil
 }
 
-func GetURL(shortURL string) string {
-	mapping := Mappings[shortURL]
-	if mapping == (Links{}) {
+func GetURL(shortURL string, ctx context.Context, conn *redis.Client) string {
+	mapping := conn.HGetAll(ctx, shortURL).Val()
+	if mapping == nil {
 		return "Link not found"
 	}
-	return mapping.GetLink()
-}
-
-func RemoveURL(linkName string) bool {
-	mapping := Mappings[linkName]
-	isExpired := mapping.CheckExpiry(time.Now())
-	if isExpired {
-		delete(Mappings, linkName)
-		return true
-	}
-	return false
+	return mapping["Link"]
 }
