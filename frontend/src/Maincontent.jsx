@@ -10,6 +10,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import LaunchIcon from '@mui/icons-material/Launch';
 import axios from "axios";
 
 const darkTheme = createTheme({
@@ -134,7 +135,8 @@ const MainContentSection = () => {
       </Grid>
       {shortenedUrl && (
         <Grid item xs={12}>
-          <Typography variant="body6">Shortened URL: {shortenedUrl}</Typography>
+          Shortened URL: <a href={shortenedUrl} target='blank'>{shortenedUrl}</a>
+          <Button variant='contained' href={shortenedUrl} target='blank' sx={{ml:2}}><LaunchIcon/></Button>
           <Button
             variant="outlined"
             color="primary"
