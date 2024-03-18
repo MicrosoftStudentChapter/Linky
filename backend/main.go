@@ -32,6 +32,10 @@ func main() {
 
 	r := mux.NewRouter()
 
+	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Service is Alive"))
+	})
 	r.HandleFunc("/add-link", router.AddLink).Methods(http.MethodOptions, http.MethodPost)
 	r.HandleFunc("/{link}", router.HandleRouting).Methods(http.MethodOptions, http.MethodGet)
 
@@ -48,7 +52,7 @@ func main() {
 
 func HandlePreflight(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173, https://generate.mlsctiet.com/")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)

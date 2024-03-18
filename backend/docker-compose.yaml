@@ -13,6 +13,8 @@ services:
       - REDIS_ADDR=redis-server:6379
     depends_on:
       - redis
+    networks:
+      - web
 
   redis:
     container_name: redis-server

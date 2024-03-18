@@ -23,6 +23,12 @@ func HandleRouting(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	link := r.URL.Path[1:]
 	url := mapping.GetURL(link, ctx, Mem)
+	if url == "" {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Welcome to MLSC Link Generator! This link is not yet created."))
+		return
+
+	}
 	http.Redirect(w, r, url, http.StatusSeeOther)
 	// w.WriteHeader(http.StatusOK)
 	// w.Write([]byte(url))/
