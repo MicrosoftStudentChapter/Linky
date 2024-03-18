@@ -1,0 +1,22 @@
+version: "3.8"
+name: link-generator-backend
+services:
+  link-generator:
+    container_name: link-generator-backend
+    build: "."
+    restart: always
+    deploy:
+      replicas: 1
+    ports:
+      - "4000:4000"
+    environment:
+      - REDIS_ADDR=redis-server:6379
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis-server
+    image: "redis/redis-stack-server:latest"
+    restart: always
+    deploy:
+      replicas: 1

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 
 	router "github.com/MicrosoftStudentChapter/Link-Generator/pkg/router"
 
@@ -12,8 +13,13 @@ import (
 )
 
 func main() {
+	redisAddr := os.Getenv("REDIS_ADDR")
+	if redisAddr == "" {
+		redisAddr = ":6379"
+	}
+	fmt.Println("Connecting Redis to: ", redisAddr)
 	conn := redis.NewClient(&redis.Options{
-		Addr:     ":6379",
+		Addr:     redisAddr,
 		Password: "",
 		DB:       0,
 	})
