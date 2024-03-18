@@ -22,3 +22,10 @@ services:
     restart: always
     deploy:
       replicas: 1
+    networks:
+      - web
+
+networks:
+  web:
+    name: web
+    external: true
