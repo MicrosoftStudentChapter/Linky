@@ -9,6 +9,10 @@ import {
   Box,
   Snackbar,
 } from "@mui/material";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
@@ -23,9 +27,10 @@ const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
+  var dt = new Date();
+  const [expiry, setExpiry] = useState(dayjs().add(1, "week"));
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
-
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
     if (!urlRegex.test(longUrl)) {
@@ -40,7 +45,7 @@ const MainContentSection = () => {
     const raw = JSON.stringify({
       Link: longUrl,
       ShortURL: shortenedUrl,
-      Expiry: "",
+      Expiry: expiry.toISOString(),
     });
     const config = {
       method: "POST",
@@ -125,6 +130,18 @@ const MainContentSection = () => {
           value={alias}
           onChange={(e) => setAlias(e.target.value)}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Set Expiry Date (1 week default)"
+            value={expiry}
+            fullWidth
+            onChange={(newVal) => {
+              setExpiry(newVal);
+            }}
+          />
+        </LocalizationProvider>
       </Grid>
       <Grid item xs={12}>
         <Button variant="contained" color="primary" onClick={handleShortenUrl}>
