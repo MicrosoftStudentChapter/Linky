@@ -28,7 +28,7 @@ const MainContentSection = () => {
   const [alias, setAlias] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
   var dt = new Date();
-  const [expiry, setExpiry] = useState(dayjs().add(1, "year"));
+  const [expiry, setExpiry] = useState(dayjs().add(1, "week"));
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
   const handleShortenUrl = async () => {
@@ -134,7 +134,7 @@ const MainContentSection = () => {
       <Grid item xs={12}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            label="Set Expiry Date"
+            label="Set Expiry Date (1 week default)"
             value={expiry}
             fullWidth
             onChange={(newVal) => {
