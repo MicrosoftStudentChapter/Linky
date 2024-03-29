@@ -18,14 +18,21 @@ services:
 
   redis:
     container_name: redis-server
-    image: "redis/redis-stack-server:latest"
+    image: "redis:latest"
+    command: ["redis-server", "--appendonly", "yes"]
     restart: always
     deploy:
       replicas: 1
     networks:
       - web
+    volumes:
+      - redis-data:/data
 
 networks:
   web:
     name: web
     external: true
+
+volumes:
+  redis-data:
+    name: redis-data

@@ -41,6 +41,8 @@ const MainContentSection = () => {
 
     const shortenedUrl = generateShortenedUrl(alias);
 
+    const link = "https://l.mlsctiet.com"
+
     // api call to add link in the backend
     const raw = JSON.stringify({
       Link: longUrl,
@@ -50,7 +52,7 @@ const MainContentSection = () => {
     const config = {
       method: "POST",
       maxBodyLength: Infinity,
-      url: "https://l.mlsctiet.com/add-link",
+      url: `${link}/add-link`,
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin":
@@ -62,7 +64,7 @@ const MainContentSection = () => {
     // show the response from the backend with this
     if (response.status == 200) {
       console.log(raw);
-      setShortenedUrl("https://l.mlsctiet.com/" + shortenedUrl);
+      setShortenedUrl(`${link}/` + shortenedUrl);
     } else {
       setShortenedUrl("Error in shortening the URL");
     }
