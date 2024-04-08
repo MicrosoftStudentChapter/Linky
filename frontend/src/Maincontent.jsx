@@ -106,11 +106,12 @@ const MainContentSection = () => {
       container
       spacing={2}
       alignItems="center"
-      sx={{ backgroundColor: "#eaeff1", padding: 5, borderRadius: 10 }}
+      justifyContent="center"
+      sx={{ backgroundColor: "#eaeff1", padding: { xs: 3.8, md: 5 }, borderRadius: 10}}
     >
-      <Typography variant="h4">Shorten Your link</Typography>
+      <Typography variant="h4" align="center">Shorten Your link</Typography>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
         <TextField
           label="Enter your long URL"
           variant="outlined"
@@ -122,7 +123,7 @@ const MainContentSection = () => {
           helperText={error}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
         <TextField
           label="Enter custom alias (optional)"
           variant="outlined"
@@ -131,7 +132,7 @@ const MainContentSection = () => {
           onChange={(e) => setAlias(e.target.value)}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Set Expiry Date (1 week default)"
