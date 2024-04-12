@@ -161,14 +161,13 @@ const MainContentSection = () => {
       <Grid item xs={12} sm={4}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
+            format="DD/MM/YYYY"
             label="Set Expiry Date"
             value={expiry}
             fullWidth
             minDate={dayjs().startOf('day')}
             disabled={(noExpiry)}
-            onChange={(newVal) => {setExpiry(newVal)
-            }
-            }
+            onChange={(newVal) => {setExpiry(newVal)}}
           />
          
         </LocalizationProvider>
@@ -248,4 +247,3 @@ const MainContentSection = () => {
 
 export default MainContentSection;
 // */
-
