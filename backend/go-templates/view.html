@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>MLSC: Link Generator Engine</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLSC: Link Generator Engine</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,7 +33,7 @@
         </style>
 </head>
 <body>
-    <div class="content">
+    <div class="content" style="display: none;">
         <h1>All Links</h1>
         <div>
             {{range .}}
@@ -45,8 +45,8 @@
         const password = "04b7ea35d471908eb2ec254dac05e80f7bfed03274d17c2d51b1db0dd1b162cf"
         let hash = '';
         const content = document.querySelector(".content");
-        content.style.display = "none";
         while(hash !== password){
+            content.style.display = "none";
             const cryto = window.crypto;
             const userPasswordInput = prompt("Enter password: ")
             hash = await cryto.subtle.digest("SHA-256", new TextEncoder('utf-8').encode(userPasswordInput)).then(hash => {
