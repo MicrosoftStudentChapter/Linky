@@ -1,3 +1,4 @@
+// /*
 import React, { useState } from "react";
 import {
   TextField,
@@ -8,6 +9,10 @@ import {
   Typography,
   Box,
   Snackbar,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -27,10 +32,12 @@ const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
-  var dt = new Date();
   const [expiry, setExpiry] = useState(dayjs().add(1, "week"));
+  const [expiryOption, setExpiryOption] = useState("1 week");
+  const [noExpiry, setNoExpiry] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
+  
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
     if (!urlRegex.test(longUrl)) {
@@ -45,7 +52,7 @@ const MainContentSection = () => {
     const raw = JSON.stringify({
       Link: longUrl,
       ShortURL: shortenedUrl,
-      Expiry: expiry.toISOString(),
+      Expiry: noExpiry ? null : expiry.toISOString(),
     });
     const config = {
       method: "POST",
@@ -59,7 +66,7 @@ const MainContentSection = () => {
       data: raw,
     };
     const response = await axios.request(config);
-    // show the response from the backend with this
+     // show the response from the backend with this
     if (response.status == 200) {
       console.log(raw);
       setShortenedUrl("https://l.mlsctiet.com/" + shortenedUrl);
@@ -101,6 +108,26 @@ const MainContentSection = () => {
       });
   };
 
+  const handleExpiryOptionChange = (event) => {
+    setExpiryOption(event.target.value);
+    switch (event.target.value) {
+      case "1 week":
+        setExpiry(dayjs().add(1, "week"));
+        break;
+      case "2 weeks":
+        setExpiry(dayjs().add(2, "week"));
+        break;
+      case "1 month":
+        setExpiry(dayjs().add(1, "month"));
+        break;
+      case "1 year":
+        setExpiry(dayjs().add(1, "year"));
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <Grid
       container
@@ -135,14 +162,49 @@ const MainContentSection = () => {
       <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            label="Set Expiry Date (1 week default)"
+            format="DD/MM/YYYY"
+            label="Set Expiry Date"
             value={expiry}
             fullWidth
-            onChange={(newVal) => {
-              setExpiry(newVal);
-            }}
+            minDate={dayjs().startOf('day')}
+            disabled={(noExpiry)}
+            onChange={(newVal) => {setExpiry(newVal)}}
           />
+         
         </LocalizationProvider>
+       
+      </Grid>
+   
+
+      <Grid item xs={12} sm={4}>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel id="expiry-option-label">Expiry Option</InputLabel>
+          <Select
+            labelId="expiry-option-label"
+            id="expiry-option-select"
+            value={expiryOption}
+            onChange={handleExpiryOptionChange}
+            label="Expiry Option"
+            size="medium" 
+            disabled={noExpiry}
+            
+            // fullWidth
+          >
+            <MenuItem value="1 week">1 week (until {dayjs().add(1, "week").format("DD/MM/YYYY")})</MenuItem>
+            <MenuItem value="2 weeks">2 weeks (until {dayjs().add(2, "week").format("DD/MM/YYYY")})</MenuItem>
+            <MenuItem value="1 month">1 month (until {dayjs().add(1, "month").format("DD/MM/YYYY")})</MenuItem>
+            <MenuItem value="1 year">1 year (until {dayjs().add(1, "year").format("DD/MM/YYYY")})</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={() => setNoExpiry(!noExpiry)}
+        >
+          {noExpiry ? "Clear No Expiry" : "No Expiry"}
+        </Button>
       </Grid>
       <Grid item xs={12}>
         <Button variant="contained" color="primary" onClick={handleShortenUrl}>
@@ -173,15 +235,16 @@ const MainContentSection = () => {
           </Button>
         </Grid>
       )}
-      {/* Snackbar Component */}
+      
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000} // Hide after 3 seconds
-        onClose={() => setSnackbarOpen(false)} // Close Snackbar
-        message="Successfully copied Link" // Snackbar message
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Successfully copied Link"
       />
     </Grid>
   );
 };
 
 export default MainContentSection;
+// */
