@@ -28,8 +28,11 @@ func GetAllLinks(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("No links found"))
 		return
 	}
-	for _, link := range links {
-		w.Write([]byte(fmt.Sprintf("%s - %s\n", link.ShortURL, link.Link)))
+
+	err := json.NewEncoder(w).Encode(links)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 
