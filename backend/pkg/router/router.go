@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 
@@ -22,18 +23,24 @@ type RequestBody struct {
 func GetAllLinks(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	links := mapping.GetAllLinks(ctx, Mem)
+	page, err := template.ParseFiles("./go-templates/view.html")
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Internal Server Error"))
+		return
+	}
 	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
 	if len(links) == 0 {
 		w.Write([]byte("No links found"))
 		return
 	}
-
 	err := json.NewEncoder(w).Encode(links)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	page.Execute(w, linksData)
 }
 
 func HandleRouting(w http.ResponseWriter, r *http.Request) {

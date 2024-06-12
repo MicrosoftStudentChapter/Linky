@@ -13,6 +13,7 @@ RUN go build -o main.exe main.go
 FROM scratch
 WORKDIR /app
 COPY --from=build /app/main.exe ./
+COPY --from=build /app/go-templates/ ./go-templates/
 LABEL traefik.port=80
 LABEL traefik.http.routers.link.rule="Host(`l.mlsctiet.com`)"
 LABEL traefik.http.routers.link.tls=true
