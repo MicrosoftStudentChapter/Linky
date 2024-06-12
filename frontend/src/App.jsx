@@ -12,7 +12,10 @@ const App = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '89vh',
-        width: '50vw',
+        width: {
+          xs: '100%',
+          md: '50vw',
+        }
       }}
     >
       <MainContentSection />
