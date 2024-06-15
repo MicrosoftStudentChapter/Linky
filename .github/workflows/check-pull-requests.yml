@@ -30,10 +30,11 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: 1.20
+        go-version: 1.20.4
 
     - name: Install dependencies
-      run: cd backend && go mod tidy
+      run: go mod tidy
+      working-directory: ./backend
 
     - name: Wait for Redis to be ready
       run: |
@@ -45,7 +46,9 @@ jobs:
     # - name: Run tests
     #   env:
     #     REDIS_URL: redis://localhost:6379
-    #   run: cd backend && go test ./...
+    #   run: go test ./...
+    #   working-directory: ./backend
 
     - name: Build the project
-      run: cd backend && go build -v -o main main.go
+      run: go build -v -o main main.go
+      working-directory: ./backend
