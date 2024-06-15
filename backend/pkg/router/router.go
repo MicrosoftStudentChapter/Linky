@@ -35,10 +35,10 @@ func GetAllLinks(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("No links found"))
 		return
 	}
-	err := json.NewEncoder(w).Encode(links)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	var linksData []string
+	for _, link := range links {
+		// w.Write([]byte(fmt.Sprintf("%s - %s\n", link.ShortURL, link.Link)))
+		linksData = append(linksData, fmt.Sprintf("%s - %s\n", link.ShortURL, link.Link))
 	}
 	page.Execute(w, linksData)
 }
