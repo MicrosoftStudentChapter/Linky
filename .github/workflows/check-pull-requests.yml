@@ -33,7 +33,7 @@ jobs:
         go-version: 1.20
 
     - name: Install dependencies
-      run: go mod tidy
+      run: cd backend && go mod tidy
 
     - name: Wait for Redis to be ready
       run: |
@@ -45,7 +45,7 @@ jobs:
     # - name: Run tests
     #   env:
     #     REDIS_URL: redis://localhost:6379
-    #   run: go test ./...
+    #   run: cd backend && go test ./...
 
     - name: Build the project
-      run: go build -v ./backend/main.go
+      run: cd backend && go build -v -o main main.go
