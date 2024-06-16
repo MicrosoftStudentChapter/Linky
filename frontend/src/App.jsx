@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, Typography } from '@mui/material';
+// import React from 'react';
+import { Container } from '@mui/material';
 import MainContentSection from './Maincontent';
 import "./App.css"
 const App = () => {
@@ -12,7 +12,10 @@ const App = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '89vh',
-        width: '50vw',
+        width: {
+          xs: '100%',
+          md: '50vw',
+        }
       }}
     >
       <MainContentSection />
