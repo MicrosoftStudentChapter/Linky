@@ -56,7 +56,7 @@ To deploy Linky in a production environment, use Docker:
 ### 1. Run Docker Compose
 - Execute the following command in the root directory of the project:
   ```bash
-  docker-compose up -d
+  docker compose up -d
 ### 2. Deploy Frontend
 - You can deploy the frontend anywhere and configure it to point to the backend URL for link management.
 
