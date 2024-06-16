@@ -9,11 +9,10 @@ Create a custom-named link: `https://abcd.xyz/my-form => Redirects to a Google F
 ## Table of Contents
 
 - [Features](#Features)
-- [Getting Started](##getting-started)
-  - [Prerequisites](###prerequisites)
-  - [Installation](###installation)
+- [Getting Started](#getting-started)
+  - [Prerequisites](##prerequisites)
+  - [Installation](##installation)
 - [Production Deployment](#production-deployment)
-- [Usage](#usage)
 - [Contributing](#contributing)
 
 ## Features
