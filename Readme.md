@@ -12,7 +12,7 @@ Create a custom-named link: `https://abcd.xyz/my-form => Redirects to a Google F
 - [Getting Started](#getting-started)
   - [Prerequisites](##prerequisites)
   - [Installation](##installation)
-- [Production Deployment](#production-deployment)
+- [Production Deployment](#deployment)
 - [Contributing](#contributing)
 
 ## Features
