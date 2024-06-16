@@ -10,8 +10,8 @@ Create a custom-named link: `https://abcd.xyz/my-form => Redirects to a Google F
 
 - [Features](#Features)
 - [Getting Started](#getting-started)
-  - [Prerequisites](##prerequisites)
-  - [Installation](##installation)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
 - [Production Deployment](#deployment)
 - [Contributing](#contributing)
 
