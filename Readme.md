@@ -18,7 +18,6 @@ Create a custom-named link: `https://abcd.xyz/my-form => Redirects to a Google F
 ## Features
 
 - **Custom Named Links**: Easily create short, custom-named links.
-- **Domain Flexibility**: Use any pre-existing domain name for your redirects.
 - **User-Friendly Interface**: Manage redirects through a simple web interface.
 - **Secure**: Ensure safe redirects with validation and monitoring.
 
