@@ -5,9 +5,9 @@ import {
   Button,
   Grid,
   createTheme,
-  ThemeProvider,
+  // ThemeProvider,
   Typography,
-  Box,
+  // Box,
   Snackbar,
   MenuItem,
   FormControl,
@@ -22,11 +22,11 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//   },
+// });
 
 const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
