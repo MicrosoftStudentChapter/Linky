@@ -37,7 +37,7 @@ Before you begin, ensure you have the following:
 | 1. **JavaScript** and **ReactJS**              | 1. **Golang** for creating backend services    |
 | 2. **CSS** and **MUI** for styling             | 2. **Redis** as the database                   |
 | 3. **API Integration**                         | 3. **Optimization Techniques** for performance |
-| 4. Familiarity with tools like **Git**, **GitHub**, **IDE**, **Figma**, **Illustrator** | Familiarity with tools like **Git**, **GitHub**, **IDE** |
+| 4. Familiarity with tools like **Git**, **GitHub**, **IDE**, **Figma**, **Illustrator** | 4. Familiarity with tools like **Git**, **GitHub**, **IDE** |
 
 ### Installation
 
@@ -66,7 +66,7 @@ To deploy Linky in a production environment, use Docker:
 - Execute the following command in the root directory of the project (before starting the frontend, ensure Docker is running to manage dependencies effectively): 
   ```bash
   cd backend
-  docker-compose up -d
+  docker compose up -d
 2. **Deploy Frontend**
 - You can deploy the frontend anywhere and configure it to point to the backend URL for link management.
 - **Note** - Always run the docker first instead of frontend
