@@ -32,12 +32,41 @@ import axios from "axios";
 const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [expiry, setExpiry] = useState(dayjs().add(1, "week"));
   const [expiryOption, setExpiryOption] = useState("1 week");
   const [noExpiry, setNoExpiry] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
+
+  const registerUser = async () => {
+    const userData = JSON.stringify({
+      user: username,
+      pass: password,
+    });
+
+    const config = {
+      method: "POST",
+      maxBodyLength: Infinity,
+      url: `http://localhost:4000/register`,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin":
+          "https://generate.mlsctiet.com, http://localhost:5173",
+      },
+      data: userData,
+    };
+    const response = await axios.request(config);
+
+    if (response.status == 200) {
+      console.log(userData);
+      setShortenedUrl("Login success");
+    } else {
+      setShortenedUrl("Login Failed");
+    }
+  }
   
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -163,6 +192,24 @@ const MainContentSection = () => {
         />
       </Grid>
       <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
+        <TextField
+          label="email"
+          variant="outlined"
+          fullWidth
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </Grid>
+      <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
+        <TextField
+          label="password"
+          variant="outlined"
+          fullWidth
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </Grid>
+      <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             format="DD/MM/YYYY"
@@ -212,6 +259,11 @@ const MainContentSection = () => {
       <Grid item xs={12}>
         <Button variant="contained" color="primary" onClick={handleShortenUrl}>
           Shorten URL
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Button variant="contained" color="primary" onClick={registerUser}>
+          Register
         </Button>
       </Grid>
       {shortenedUrl && (

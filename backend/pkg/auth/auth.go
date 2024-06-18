@@ -79,20 +79,22 @@ func ValidateJWT(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	username := r.URL.Query().Get("username")
-	password := r.URL.Query().Get("password")
+	var userData struct {
+		Username string `json:"user"`
+		Password string `json:"pass"`
+	}
 
-	if username == "" || password == "" {
-		http.Error(w, "Username and password are required", http.StatusBadRequest)
+	if err := json.NewDecoder(r.Body).Decode(&userData); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	if _, exists := users[username]; exists {
+	if _, exists := users[userData.Username]; exists {
 		http.Error(w, "User already exists", http.StatusBadRequest)
 		return
 	}
 
-	users[username] = password
+	users[userData.Username] = userData.Password
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
