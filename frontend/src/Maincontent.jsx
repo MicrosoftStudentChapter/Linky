@@ -49,7 +49,7 @@ const MainContentSection = () => {
 
     const shortenedUrl = generateShortenedUrl(alias);
 
-    const link = "https://l.mlsctiet.com"
+    const link = "http://localhost:4000"
 
     // api call to add link in the backend
     const raw = JSON.stringify({
