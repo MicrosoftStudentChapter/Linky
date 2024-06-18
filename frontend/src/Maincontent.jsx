@@ -1,13 +1,14 @@
 // /*
-import React, { useState } from "react";
+// import React from "react";
+import { useState } from "react";
 import {
   TextField,
   Button,
   Grid,
-  createTheme,
-  ThemeProvider,
+  // createTheme,
+  // ThemeProvider,
   Typography,
-  Box,
+  // Box,
   Snackbar,
   MenuItem,
   FormControl,
@@ -22,11 +23,11 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//   },
+// });
 
 const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
