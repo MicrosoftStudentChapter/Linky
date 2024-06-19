@@ -22,6 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
+import QRcode from "qrcode";
 
 // const darkTheme = createTheme({
 //   palette: {
@@ -38,6 +39,7 @@ const MainContentSection = () => {
   const [noExpiry, setNoExpiry] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
+  const [qrimage, setqrimage] = useState("");
   
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -130,6 +132,10 @@ const MainContentSection = () => {
         break;
     }
   };
+
+  const generateQRcode =()=>{
+      QRcode.toDataURL(shortenedUrl).then(setqrimage)
+    }
 
   return (
     <Grid
@@ -236,6 +242,17 @@ const MainContentSection = () => {
           >
             <ContentCopyIcon />
           </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={generateQRcode}
+            sx={{ marginLeft: 2 }}
+          >
+            QR Code
+            </Button>
+            <Grid>
+               <img src={qrimage}/>
+            </Grid>
         </Grid>
       )}
       
