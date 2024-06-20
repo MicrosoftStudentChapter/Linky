@@ -1,10 +1,7 @@
 // import React from 'react';
 import { Container } from '@mui/material';
-import { Routes, Route, Link } from 'react-router-dom';
 import MainContentSection from './Maincontent';
-import Adminpage from './Adminpage';
-import "./App.css";
-
+import "./App.css"
 const App = () => {
   return (
     <div className='app'>
@@ -21,12 +18,8 @@ const App = () => {
         }
       }}
     >
-      <Routes>
-          <Route path="/" element={<MainContentSection />} />
-          <Route path="/Adminpage" element={<Adminpage />} />
-        </Routes>
-      </Container>
-      
+      <MainContentSection />
+    </Container>
     </div>
   );
 };
