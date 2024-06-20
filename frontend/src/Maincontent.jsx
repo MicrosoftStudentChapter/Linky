@@ -22,7 +22,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
-import QRcode from "qrcode";
 
 // const darkTheme = createTheme({
 //   palette: {
@@ -39,7 +38,6 @@ const MainContentSection = () => {
   const [noExpiry, setNoExpiry] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
-  const [qrimage, setqrimage] = useState("");
   
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -51,7 +49,7 @@ const MainContentSection = () => {
 
     const shortenedUrl = generateShortenedUrl(alias);
 
-    const link = "http://localhost:4000"
+    const link = "https://l.mlsctiet.com"
 
     // api call to add link in the backend
     const raw = JSON.stringify({
@@ -77,34 +75,6 @@ const MainContentSection = () => {
       setShortenedUrl(`${link}/` + shortenedUrl);
     } else {
       setShortenedUrl("Error in shortening the URL");
-    }
-  };
-
-  const login = async () => {
-    const link = "http://localhost:4000"
-  
-    const config = {
-      method: "GET",
-      url: `${link}/login`,
-      headers: {
-        "Authorization":
-          "JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6IlByZWV0IiwiZXhwIjoxNzE4ODgxOTcxLCJpYXQiOjE3MTg4ODAxNzEsImlzcyI6Ikxpbmt5In0.Si9PbGo2gw_vY70v4V0kFkMDd_yRNNvKli-gWshJ2Js",
-      },
-    };
-  
-    try {
-      const response = await axios.request(config);
-      if (response.status === 200) {
-        console.log("Login success");
-        // handle the redirect if necessary
-        if (response.request.responseURL) {
-          window.location.href = response.request.responseURL;
-        }
-      } else {
-        console.log("Login failed");
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
     }
   };
 
@@ -161,10 +131,6 @@ const MainContentSection = () => {
     }
   };
 
-  const generateQRcode =()=>{
-      QRcode.toDataURL(shortenedUrl).then(setqrimage)
-    }
-
   return (
     <Grid
       container
@@ -177,7 +143,7 @@ const MainContentSection = () => {
 
       <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
         <TextField
-          label="Username"
+          label="Enter your long URL"
           variant="outlined"
           fullWidth
           value={longUrl}
@@ -244,8 +210,8 @@ const MainContentSection = () => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={login}>
-          Login
+        <Button variant="contained" color="primary" onClick={handleShortenUrl}>
+          Shorten URL
         </Button>
       </Grid>
       {shortenedUrl && (
@@ -270,17 +236,6 @@ const MainContentSection = () => {
           >
             <ContentCopyIcon />
           </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={generateQRcode}
-            sx={{ marginLeft: 2 }}
-          >
-            QR Code
-            </Button>
-            <Grid>
-               <img src={qrimage}/>
-            </Grid>
         </Grid>
       )}
       
