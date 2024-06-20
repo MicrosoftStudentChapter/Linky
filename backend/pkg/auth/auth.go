@@ -3,6 +3,7 @@ package auth
 import (
 	// "fmt"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -82,7 +83,9 @@ func TokenRequired(next http.Handler) http.Handler {
 }
 
 func ProtectedRoute(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "http://localhost:4000/admin", http.StatusSeeOther)
+	url := "http://localhost:5173/Adminpage"
+	fmt.Printf("Route Url: " + url)
+	http.Redirect(w, r, url, http.StatusSeeOther)
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {

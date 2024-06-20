@@ -22,6 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
+import QRcode from "qrcode";
 
 // const darkTheme = createTheme({
 //   palette: {
@@ -32,41 +33,13 @@ import axios from "axios";
 const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [expiry, setExpiry] = useState(dayjs().add(1, "week"));
   const [expiryOption, setExpiryOption] = useState("1 week");
   const [noExpiry, setNoExpiry] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
-
-  const registerUser = async () => {
-    const userData = JSON.stringify({
-      user: username,
-      pass: password,
-    });
-
-    const config = {
-      method: "POST",
-      maxBodyLength: Infinity,
-      url: `http://localhost:4000/register`,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin":
-          "https://generate.mlsctiet.com, http://localhost:5173",
-      },
-      data: userData,
-    };
-    const response = await axios.request(config);
-
-    if (response.status == 200) {
-      console.log(userData);
-      setShortenedUrl("Login success");
-    } else {
-      setShortenedUrl("Login Failed");
-    }
-  }
+  const [qrimage, setqrimage] = useState("");
   
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -104,6 +77,34 @@ const MainContentSection = () => {
       setShortenedUrl(`${link}/` + shortenedUrl);
     } else {
       setShortenedUrl("Error in shortening the URL");
+    }
+  };
+
+  const login = async () => {
+    const link = "http://localhost:4000"
+  
+    const config = {
+      method: "GET",
+      url: `${link}/login`,
+      headers: {
+        "Authorization":
+          "JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6IlByZWV0IiwiZXhwIjoxNzE4ODgxOTcxLCJpYXQiOjE3MTg4ODAxNzEsImlzcyI6Ikxpbmt5In0.Si9PbGo2gw_vY70v4V0kFkMDd_yRNNvKli-gWshJ2Js",
+      },
+    };
+  
+    try {
+      const response = await axios.request(config);
+      if (response.status === 200) {
+        console.log("Login success");
+        // handle the redirect if necessary
+        if (response.request.responseURL) {
+          window.location.href = response.request.responseURL;
+        }
+      } else {
+        console.log("Login failed");
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
     }
   };
 
@@ -160,6 +161,10 @@ const MainContentSection = () => {
     }
   };
 
+  const generateQRcode =()=>{
+      QRcode.toDataURL(shortenedUrl).then(setqrimage)
+    }
+
   return (
     <Grid
       container
@@ -172,7 +177,7 @@ const MainContentSection = () => {
 
       <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
         <TextField
-          label="Enter your long URL"
+          label="Username"
           variant="outlined"
           fullWidth
           value={longUrl}
@@ -189,24 +194,6 @@ const MainContentSection = () => {
           fullWidth
           value={alias}
           onChange={(e) => setAlias(e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
-        <TextField
-          label="email"
-          variant="outlined"
-          fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
-        <TextField
-          label="password"
-          variant="outlined"
-          fullWidth
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
         />
       </Grid>
       <Grid item xs={12} sx={{ pt: { xs: 32, md: 16 }, pl: 16 }}>
@@ -257,13 +244,8 @@ const MainContentSection = () => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={handleShortenUrl}>
-          Shorten URL
-        </Button>
-      </Grid>
-      <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={registerUser}>
-          Register
+        <Button variant="contained" color="primary" onClick={login}>
+          Login
         </Button>
       </Grid>
       {shortenedUrl && (
@@ -288,6 +270,17 @@ const MainContentSection = () => {
           >
             <ContentCopyIcon />
           </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={generateQRcode}
+            sx={{ marginLeft: 2 }}
+          >
+            QR Code
+            </Button>
+            <Grid>
+               <img src={qrimage}/>
+            </Grid>
         </Grid>
       )}
       

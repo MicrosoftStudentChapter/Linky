@@ -1,7 +1,10 @@
 // import React from 'react';
 import { Container } from '@mui/material';
+
 import MainContentSection from './Maincontent';
-import "./App.css"
+import Adminpage from './Adminpage';
+import "./App.css";
+
 const App = () => {
   return (
     <div className='app'>
@@ -18,8 +21,12 @@ const App = () => {
         }
       }}
     >
-      <MainContentSection />
-    </Container>
+      <Routes>
+          <Route path="/" element={<MainContentSection />} />
+          <Route path="/Adminpage" element={<Adminpage />} />
+        </Routes>
+      </Container>
+      
     </div>
   );
 };
