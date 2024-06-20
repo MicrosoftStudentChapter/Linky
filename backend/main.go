@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	auth "github.com/MicrosoftStudentChapter/Link-Generator/pkg/auth"
 	router "github.com/MicrosoftStudentChapter/Link-Generator/pkg/router"
-
 	"github.com/gorilla/mux"
 	"github.com/redis/go-redis/v9"
 )
@@ -31,8 +31,12 @@ func main() {
 	fmt.Println("Redis [PING]: ", res)
 
 	r := mux.NewRouter()
-
 	r.HandleFunc("/links/all", router.GetAllLinks).Methods(http.MethodOptions, http.MethodGet)
+	r.HandleFunc("/generate-token", auth.GenerateJWT).Methods(http.MethodOptions, http.MethodGet)
+	r.Handle("/login", auth.TokenRequired(http.HandlerFunc(auth.ProtectedRoute))).Methods(http.MethodOptions, http.MethodGet)
+	r.HandleFunc("/admin", auth.ProtectedRoute).Methods(http.MethodOptions, http.MethodGet)
+	r.HandleFunc("/register", auth.Register).Methods(http.MethodOptions, http.MethodPost)
+	r.HandleFunc("/show/users", auth.ShowUsers).Methods(http.MethodOptions, http.MethodGet)
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Service is Alive"))
