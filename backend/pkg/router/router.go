@@ -38,7 +38,13 @@ func GetAllLinks(w http.ResponseWriter, r *http.Request) {
 	var linksData []string
 	for _, link := range links {
 		// w.Write([]byte(fmt.Sprintf("%s - %s\n", link.ShortURL, link.Link)))
-		linksData = append(linksData, fmt.Sprintf("%s - %s\n", link.ShortURL, link.Link))
+		if link.Expire == "" {
+			linksData = append(linksData, fmt.Sprintf("%s - %s - %s\n", link.ShortURL, link.Link, "No Expiry"))
+		} else {
+			time := link.Expire
+			time.Format("2006-01-02 15:04:05")
+			linksData = append(linksData, fmt.Sprintf("%s - %s - %s\n", link.ShortURL, link.Link, link.Expire))
+		}
 	}
 	page.Execute(w, linksData)
 }

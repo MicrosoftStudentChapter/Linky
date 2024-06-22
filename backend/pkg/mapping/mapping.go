@@ -12,6 +12,7 @@ import (
 type Link struct {
 	Link     string `redis:"Link" json:"link"`
 	ShortURL string `redis:"ShortURL" json:"shortURL"`
+	Expire   string `redis:"Expire" json:"expire"`
 }
 
 func AddURL(linkURL string, shortURL string, exp string, ctx context.Context, conn *redis.Client) (Link, error) {
@@ -21,6 +22,7 @@ func AddURL(linkURL string, shortURL string, exp string, ctx context.Context, co
 			return Link{
 				Link:     existingMap["Link"],
 				ShortURL: existingMap["ShortURL"],
+				Expire:   existingMap["Expire"],
 			}, nil
 		} else {
 			return Link{}, fmt.Errorf("shortURL already exists")
@@ -44,6 +46,7 @@ func AddURL(linkURL string, shortURL string, exp string, ctx context.Context, co
 	mapping := Link{
 		Link:     linkURL,
 		ShortURL: shortURL,
+		Expire:   exp,
 	}
 	err = conn.HSet(ctx, shortURL, mapping).Err()
 	if err != nil {
@@ -78,6 +81,7 @@ func GetAllLinks(ctx context.Context, conn *redis.Client) []Link {
 		links = append(links, Link{
 			Link:     link["Link"],
 			ShortURL: link["ShortURL"],
+			Expire:   link["Expire"],
 		})
 	}
 	return links
