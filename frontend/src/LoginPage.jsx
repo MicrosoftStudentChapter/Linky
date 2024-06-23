@@ -58,16 +58,18 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Grid>
-
+      <Grid item xs={12} sm={4}>
       <Button
         type="submit"
         fullWidth
+        spacing={2}
         variant="contained"
         color="primary"
         onClick={handleLogin}
       >
         Login
       </Button>
+      </Grid>
     </Grid>
   );
 };
