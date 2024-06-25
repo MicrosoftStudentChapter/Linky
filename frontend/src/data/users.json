@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "username": "User1",
+    "date": "2024-06-24",
+    "links": [
+      {
+        "link": "https://www.youtube.com/watch?v=OMkEVX23BdM",
+        "expiry": "01/07/2024",
+        "analytics": "100 clicks",
+        "alias": "https://l.mlsctiet.com/Lions"
+      },
+      {
+        "link": "https://www.wikihow.com/Make-Slime",
+        "expiry": "No expiry",
+        "analytics": "50 clicks",
+        "alias": "https://l.mlsctiet.com/slime"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "username": "User2",
+    "date": "2024-06-24",
+    "links": [
+      {
+        "link": "https://www.nasa.gov/international-space-station/",
+        "expiry": "12/12/2023",
+        "analytics": "1 click",
+        "alias": "https://l.mlsctiet.com/nasa"
+      },
+      {
+        "link": "https://learninglab.si.edu/",
+        "expiry": "No expiry",
+        "analytics": "67 clicks",
+        "alias": "https://l.mlsctiet.com/work"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "username": "User3",
+    "date": "2024-06-24",
+    "links": [
+      {
+        "link": "https://www.wolframalpha.com/input/?i=computational+knowledge+engine",
+        "expiry": "24/06/2024",
+        "analytics": "6 clicks",
+        "alias": "https://l.mlsctiet.com/Wolf"
+      }
+    ]
+  }
+]

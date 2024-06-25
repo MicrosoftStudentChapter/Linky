@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
   TextField,
+  Container,
   Button,
   Grid,
   // createTheme,
@@ -22,6 +23,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
+import QRcode from "qrcode";
 
 // const darkTheme = createTheme({
 //   palette: {
@@ -67,6 +69,7 @@ const MainContentSection = () => {
       setShortenedUrl("Login Failed");
     }
   }
+  const [qrimage, setqrimage] = useState("");
   
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -160,7 +163,24 @@ const MainContentSection = () => {
     }
   };
 
+  const generateQRcode =()=>{
+      QRcode.toDataURL(shortenedUrl).then(setqrimage)
+    }
+
   return (
+    <Container
+      maxWidth="md" 
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '89vh',
+        width: {
+          xs: '100%',
+          md: '50vw',
+        }
+      }}
+    >
     <Grid
       container
       spacing={2}
@@ -288,6 +308,17 @@ const MainContentSection = () => {
           >
             <ContentCopyIcon />
           </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={generateQRcode}
+            sx={{ marginLeft: 2 }}
+          >
+            QR Code
+            </Button>
+            <Grid>
+               <img src={qrimage}/>
+            </Grid>
         </Grid>
       )}
       
@@ -298,6 +329,7 @@ const MainContentSection = () => {
         message="Successfully copied Link"
       />
     </Grid>
+    </Container>
   );
 };
 
