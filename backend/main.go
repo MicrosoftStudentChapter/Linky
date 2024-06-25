@@ -31,10 +31,9 @@ func main() {
 	fmt.Println("Redis [PING]: ", res)
 
 	r := mux.NewRouter()
-
 	r.HandleFunc("/links/all", router.GetAllLinks).Methods(http.MethodOptions, http.MethodGet)
-	r.HandleFunc("/generate/jwt", auth.GenerateJWT).Methods(http.MethodOptions, http.MethodGet)
-	r.HandleFunc("/validate/jwt", auth.ValidateJWT).Methods(http.MethodOptions, http.MethodGet)
+	r.HandleFunc("/generate-token", auth.GenerateJWT).Methods(http.MethodOptions, http.MethodGet)
+	r.Handle("/login", auth.TokenRequired(http.HandlerFunc(auth.ProtectedRoute))).Methods(http.MethodOptions, http.MethodGet)
 	r.HandleFunc("/register", auth.Register).Methods(http.MethodOptions, http.MethodPost)
 	r.HandleFunc("/show/users", auth.ShowUsers).Methods(http.MethodOptions, http.MethodGet)
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
