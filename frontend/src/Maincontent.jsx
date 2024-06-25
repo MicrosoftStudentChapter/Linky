@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
   TextField,
+  Container,
   Button,
   Grid,
   // createTheme,
@@ -138,6 +139,19 @@ const MainContentSection = () => {
     }
 
   return (
+    <Container
+      maxWidth="md" 
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '89vh',
+        width: {
+          xs: '100%',
+          md: '50vw',
+        }
+      }}
+    >
     <Grid
       container
       spacing={2}
@@ -263,6 +277,7 @@ const MainContentSection = () => {
         message="Successfully copied Link"
       />
     </Grid>
+    </Container>
   );
 };
 
