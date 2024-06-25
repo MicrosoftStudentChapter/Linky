@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "username": "User 1",
+    "link": "https://www.example.com/article1",
+    "date": "2024-06-24",
+    "websiteAlias": "Example Article"
+  },
+  {
+    "id": 2,
+    "username": "User 2",
+    "link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "date": "2024-06-23",
+    "websiteAlias": "Never Gonna Give You Up"
+  },
+  {
+    "id": 3,
+    "username": "User 3",
+    "link": "https://www.wikipedia.org/",
+    "date": "2024-06-22",
+    "websiteAlias": "Wikipedia"
+  }
+]
