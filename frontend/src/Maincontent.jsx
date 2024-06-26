@@ -36,7 +36,7 @@ const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
-  const [expiry, setExpiry] = useState(dayjs().add(10, "second"));
+  const [expiry, setExpiry] = useState(dayjs().add(1, "week"));
   const [expiryOption, setExpiryOption] = useState("1 week");
   const [noExpiry, setNoExpiry] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
