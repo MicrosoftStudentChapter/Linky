@@ -15,6 +15,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Switch,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -35,13 +36,14 @@ const MainContentSection = () => {
   const [longUrl, setLongUrl] = useState("");
   const [alias, setAlias] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
-  const [expiry, setExpiry] = useState(dayjs().add(1, "week"));
+  const [expiry, setExpiry] = useState(dayjs().add(10, "second"));
   const [expiryOption, setExpiryOption] = useState("1 week");
   const [noExpiry, setNoExpiry] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
+  const [toggle,settoggle] = useState(1);
   const [qrimage, setqrimage] = useState("");
-  
+
   const handleShortenUrl = async () => {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
     if (!urlRegex.test(longUrl)) {
@@ -187,7 +189,7 @@ const MainContentSection = () => {
           <DatePicker
             format="DD/MM/YYYY"
             label="Set Expiry Date"
-            value={expiry}
+            value={noExpiry ? null : expiry}
             fullWidth
             minDate={dayjs().startOf('day')}
             disabled={(noExpiry)}
@@ -221,13 +223,27 @@ const MainContentSection = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={4}>
-        <Button 
+        <Switch 
           variant="contained" 
           color="primary" 
-          onClick={() => setNoExpiry(!noExpiry)}
+          onChange={() => { 
+            settoggle(toggle => toggle+1)
+            if (toggle%2 === 0) {
+              setNoExpiry(false);
+            }else{setNoExpiry(true)}
+            //setNoExpiry(true);
+            //setExpiry(dayjs().add(100, "year"));
+          }
+        }
         >
           {noExpiry ? "Clear No Expiry" : "No Expiry"}
-        </Button>
+        </Switch>
+        <Typography 
+        variant="p1"
+        align="center"
+        >
+          No Expiry
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <Button variant="contained" color="primary" onClick={handleShortenUrl}>
