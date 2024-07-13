@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import MainContentSection from './Maincontent';
 import Adminpage from './Adminpage';
 import "./App.css";
-import LoginPage from "./loginPage";
+import LoginPage from "./LoginPage";
 
 const App = () => {
   return (
