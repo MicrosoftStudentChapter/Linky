@@ -1,10 +1,14 @@
+// import React from "react";
 import { useState } from "react";
 import {
   TextField,
   Container,
   Button,
   Grid,
+  // createTheme,
+  // ThemeProvider,
   Typography,
+  // Box,
   Snackbar,
   MenuItem,
   FormControl,
@@ -49,7 +53,7 @@ const MainContentSection = () => {
 
     const shortenedUrl = generateShortenedUrl(alias);
 
-    const link = "https://localhost:4000"
+    const link = "http://localhost:4000"
 
     // api call to add link in the backend
     const raw = JSON.stringify({
@@ -293,4 +297,3 @@ const MainContentSection = () => {
 };
 
 export default MainContentSection;
-// */
