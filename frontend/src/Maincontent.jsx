@@ -49,7 +49,7 @@ const MainContentSection = () => {
 
     const shortenedUrl = generateShortenedUrl(alias);
 
-    const link = "https://l.mlsctiet.com"
+    const link = "https://linky-backend.abhinavkumarsingh.tech"
 
     // api call to add link in the backend
     const raw = JSON.stringify({
