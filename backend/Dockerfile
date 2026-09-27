@@ -1,23 +1,29 @@
-FROM golang:1.20.4-alpine AS build
+# Start with a very fast and tiny base for building
+FROM golang:1.21-alpine AS build
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
+# Enable Go modules and caching for much faster rebuilds
+ENV GO111MODULE=on
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=amd64
+
+# Copy only mod files first to cache dependencies (this makes subsequent builds INSTANT)
+COPY go.mod go.sum ./
 RUN go mod download
 
+# Copy the rest of the code
 COPY ./ ./
 
-RUN go build -o main.exe main.go
+# Build a strictly static, highly optimized binary (-s -w strips debugging info to reduce file size heavily)
+RUN go build -ldflags="-s -w" -o main.exe main.go
 
+# Second stage: The absolute smallest possible container (Zero OS overhead)
 FROM scratch
 WORKDIR /app
 COPY --from=build /app/main.exe ./
 COPY --from=build /app/go-templates/ ./go-templates/
-LABEL traefik.port=80
-LABEL traefik.http.routers.link.rule="Host(`l.mlsctiet.com`)"
-LABEL traefik.http.routers.link.tls=true
-LABEL traefik.http.routers.link.tls.certresolver="lets-encrypt"
-LABEL org.opencontainers.image.source="https://github.com/MicrosoftStudentChapter/link-generator"
+
 EXPOSE 4000
 CMD [ "./main.exe" ]
